@@ -9,4 +9,4 @@
  * @date: 2022/12/4 19:20:52
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-console.log('init')
+console.log('init');
