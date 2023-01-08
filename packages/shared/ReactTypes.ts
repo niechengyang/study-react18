@@ -24,4 +24,4 @@ export interface ReactElementType {
 	_owner: string;
 }
 
-export type Action<State> = State | ((prevState: State) => State)
+export type Action<State> = State | ((prevState: State) => State);

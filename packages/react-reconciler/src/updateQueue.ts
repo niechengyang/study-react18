@@ -18,29 +18,34 @@ export interface Update<State> {
 export interface UpdateQueue<State> {
 	shared: {
 		pending: Update<State> | null;
- 	}
+	};
 }
 
 export const createUpdate = <State>(action: Action<State>): Update<State> => {
 	return {
 		action
-	}
-}
+	};
+};
 
 export const createUpdateQueue = <Action>() => {
 	return {
 		shared: {
 			pending: null
 		}
-	} as UpdateQueue<Action>
-}
+	} as UpdateQueue<Action>;
+};
 
-export const enqueueUpdate = <Action>(updateQueue: UpdateQueue<Action>, Update: Update<Action>) => {
+export const enqueueUpdate = <Action>(
+	updateQueue: UpdateQueue<Action>,
+	Update: Update<Action>
+) => {
 	updateQueue.shared.pending = Update;
-}
+};
 
-export const processUpdateQueue = <State>(baseState: State, pendingUpdate: Update<State> | null)
-	: { memoizedState: State }=> {
+export const processUpdateQueue = <State>(
+	baseState: State,
+	pendingUpdate: Update<State> | null
+): { memoizedState: State } => {
 	const result: ReturnType<typeof processUpdateQueue<State>> = {
 		memoizedState: baseState
 	};
@@ -51,8 +56,8 @@ export const processUpdateQueue = <State>(baseState: State, pendingUpdate: Updat
 			result.memoizedState = action(baseState);
 		} else {
 			// this.setState({ x: 1})
-			result.memoizedState = action
+			result.memoizedState = action;
 		}
 	}
 	return result;
-}
+};

@@ -20,7 +20,6 @@ export class FiberNode {
 	type: any;
 	stateNode: any;
 
-
 	return: FiberNode | null;
 	child: FiberNode | null;
 	sibling: FiberNode | null;
@@ -34,14 +33,13 @@ export class FiberNode {
 	updateQueue: unknown;
 
 	flags: Flags;
-	constructor (tag: WorkTag, pendingProps: Props, key: Key) {
+	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
 		// 作为实例
 		this.tag = tag;
 		this.key = key;
 		this.type = null;
 		// 保存当前节点的dom元素
 		this.stateNode = null;
-
 
 		// 作为Fiber树形结构
 		this.return = null;
@@ -59,7 +57,6 @@ export class FiberNode {
 		// 副作用
 		this.flags = NoFlags;
 	}
-
 }
 
 // 定义rootFiberNode
@@ -67,22 +64,21 @@ export class FiberRootNode {
 	container: Container;
 	current: FiberNode;
 	finishWork: FiberNode | null;
-	constructor (container: Container, hostRootFiber: FiberNode) {
+	constructor(container: Container, hostRootFiber: FiberNode) {
 		this.container = container;
 		this.current = hostRootFiber;
 		this.finishWork = null;
-		hostRootFiber.stateNode = this
+		hostRootFiber.stateNode = this;
 	}
 }
 
-export function createWorkInProgress(current: FiberNode, pendingProps: Props): FiberNode {
+export function createWorkInProgress(
+	current: FiberNode,
+	pendingProps: Props
+): FiberNode {
 	let wip = current.alternate;
 	if (wip === null) {
-		wip = new FiberNode(
-			current.tag,
-			pendingProps,
-			current.key
-		);
+		wip = new FiberNode(current.tag, pendingProps, current.key);
 		wip.stateNode = current.stateNode;
 		wip.alternate = current;
 	} else {

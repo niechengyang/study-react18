@@ -13,4 +13,4 @@ import { FiberNode } from './fiber';
 
 export const completeWork = (fiber: FiberNode) => {
 	// 递归中的归阶段，返回父fiberNode
-}
+};

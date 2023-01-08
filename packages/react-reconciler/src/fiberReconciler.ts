@@ -12,7 +12,12 @@
 import { Container } from './hostConfig';
 import { FiberNode, FiberRootNode } from './fiber';
 import { HostRoot } from './workTag';
-import { createUpdate, createUpdateQueue, enqueueUpdate, UpdateQueue } from './updateQueue';
+import {
+	createUpdate,
+	createUpdateQueue,
+	enqueueUpdate,
+	UpdateQueue
+} from './updateQueue';
 import { ReactElementType } from 'shared/ReactTypes';
 import { scheduleUpdateOnFiber } from './workLoop';
 
@@ -25,10 +30,16 @@ export function createContainer(container: Container) {
 }
 
 // 触发更新的入口
-export function updateContainer(element: ReactElementType | null, root: FiberRootNode) {
+export function updateContainer(
+	element: ReactElementType | null,
+	root: FiberRootNode
+) {
 	const update = createUpdate(element);
 	const hostFiberNode = root.current;
-	enqueueUpdate(hostFiberNode.updateQueue as UpdateQueue<ReactElementType | null>, update);
+	enqueueUpdate(
+		hostFiberNode.updateQueue as UpdateQueue<ReactElementType | null>,
+		update
+	);
 	scheduleUpdateOnFiber(hostFiberNode);
 	return element;
 }

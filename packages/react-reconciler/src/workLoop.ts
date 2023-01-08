@@ -40,7 +40,7 @@ function markUpdateFromFiberToRoot(fiber: FiberNode) {
 // 渲染入口，找出要更新的节点，提供到commit阶段
 function renderRoot(root: FiberRootNode) {
 	// 初始化
-	prepareFreshStack(root)
+	prepareFreshStack(root);
 	do {
 		try {
 			workLoop();
@@ -68,7 +68,6 @@ function performUnitOfWork(unitOfWork: FiberNode) {
 		workInProgress = next;
 	}
 }
-
 
 function completeUnitOfWork(unitOfWork: FiberNode) {
 	let completedWork: FiberNode | null = unitOfWork;
