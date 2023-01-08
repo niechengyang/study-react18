@@ -1,0 +1,14 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "实现react的公共方法",
+  "module": "index.ts",
+  "keywords": [
+    "react"
+  ],
+  "dependencies": {
+    "shared": "workspace:*"
+  },
+  "author": "sunshine",
+  "license": "ISC"
+}

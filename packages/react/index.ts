@@ -4,9 +4,15 @@
  * This source code is licensed under the Apache license.
  * See LICENSE file in the project root for license information.
  *
- * @file: [功能描述]
+ * @file: [react 入口文件]
  *
- * @date: 2022/12/4 19:20:52
+ * @date: 2023/1/6 20:38:49
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-console.log('init');
+import { jsxDEV } from './src/jsx';
+// React
+
+export default {
+	version: '0.0.0',
+	createElement: jsxDEV
+};
