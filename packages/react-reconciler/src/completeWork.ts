@@ -11,7 +11,11 @@
  */
 import { FiberNode } from './fiber';
 import { HostComponent, HostRoot, HostText } from './workTag';
-import { appendInitialChild, createInstance, createTextInstance } from './hostConfig';
+import {
+	appendInitialChild,
+	createInstance,
+	createTextInstance
+} from './hostConfig';
 import { NoFlags } from './fiberFlags';
 
 export const completeWork = (wip: FiberNode) => {
@@ -59,7 +63,7 @@ function appendAllChildren(instance: any, wip: FiberNode) {
 		} else if (node.child !== null) {
 			node.child.return = node;
 			node = node.child;
-			continue
+			continue;
 		}
 		if (node === wip) return;
 		while (node.sibling === null) {
@@ -76,7 +80,7 @@ function bubbleProperties(wip: FiberNode) {
 	let subtreeFlags = NoFlags;
 	let child = wip.child;
 	while (child !== null) {
-		subtreeFlags |= child.subtreeFlags
+		subtreeFlags |= child.subtreeFlags;
 		subtreeFlags |= child.flags;
 		child.return = wip;
 		child = child.child;

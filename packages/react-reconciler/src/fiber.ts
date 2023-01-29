@@ -108,4 +108,3 @@ export function createFiberFromElement(element: ReactElementType): FiberNode {
 	fiber.type = type;
 	return fiber;
 }
-
