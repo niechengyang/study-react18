@@ -9,7 +9,7 @@
  * @date: 2023/1/8 20:58:12
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { Container } from './hostConfig';
+import { Container } from 'hostConfig';
 import { FiberNode, FiberRootNode } from './fiber';
 import { HostRoot } from './workTag';
 import {
@@ -23,10 +23,10 @@ import { scheduleUpdateOnFiber } from './workLoop';
 
 // 创建fiberRootNode 和hostFiberNode 并且绑定二者的关系
 export function createContainer(container: Container) {
-	const hostFiberNode = new FiberNode(HostRoot, {}, null);
-	const fiberRootNode = new FiberRootNode(container, hostFiberNode);
-	hostFiberNode.updateQueue = createUpdateQueue();
-	return fiberRootNode;
+	const hostRootFiber = new FiberNode(HostRoot, {}, null);
+	const root = new FiberRootNode(container, hostRootFiber);
+	hostRootFiber.updateQueue = createUpdateQueue();
+	return root;
 }
 
 // 触发更新的入口
@@ -34,12 +34,12 @@ export function updateContainer(
 	element: ReactElementType | null,
 	root: FiberRootNode
 ) {
-	const update = createUpdate(element);
-	const hostFiberNode = root.current;
+	const hostRootFiber = root.current;
+	const update = createUpdate<ReactElementType | null>(element);
 	enqueueUpdate(
-		hostFiberNode.updateQueue as UpdateQueue<ReactElementType | null>,
+		hostRootFiber.updateQueue as UpdateQueue<ReactElementType | null>,
 		update
 	);
-	scheduleUpdateOnFiber(hostFiberNode);
+	scheduleUpdateOnFiber(hostRootFiber);
 	return element;
 }

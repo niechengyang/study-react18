@@ -72,4 +72,4 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 }
 
 export const reconcileChildFibers = createChildReconciler(true);
-export const mountChildFibers = createChildReconciler(true);
+export const mountChildFibers = createChildReconciler(false);

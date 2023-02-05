@@ -65,11 +65,11 @@ export class FiberNode {
 export class FiberRootNode {
 	container: Container;
 	current: FiberNode;
-	finishWork: FiberNode | null;
+	finishedWork: FiberNode | null;
 	constructor(container: Container, hostRootFiber: FiberNode) {
 		this.container = container;
 		this.current = hostRootFiber;
-		this.finishWork = null;
+		this.finishedWork = null;
 		hostRootFiber.stateNode = this;
 	}
 }
@@ -83,6 +83,7 @@ export function createWorkInProgress(
 		wip = new FiberNode(current.tag, pendingProps, current.key);
 		wip.stateNode = current.stateNode;
 		wip.alternate = current;
+		current.alternate = wip;
 	} else {
 		wip.pendingProps = pendingProps;
 		wip.flags = NoFlags;

@@ -13,6 +13,8 @@ import { createWorkInProgress, FiberNode, FiberRootNode } from './fiber';
 import { beginWork } from './beginWork';
 import { completeWork } from './completeWork';
 import { HostRoot } from './workTag';
+import { MutationMask, NoFlags } from './fiberFlags';
+import { commitMutationEffects } from './commitWork';
 // 当前工作的fiber节点
 let workInProgress: FiberNode | null = null;
 
@@ -27,7 +29,7 @@ export function scheduleUpdateOnFiber(fiber: FiberNode) {
 
 function markUpdateFromFiberToRoot(fiber: FiberNode) {
 	let node = fiber;
-	let parent = fiber.return;
+	let parent = node.return;
 	while (parent !== null) {
 		node = parent;
 		parent = node.return;
@@ -52,6 +54,9 @@ function renderRoot(root: FiberRootNode) {
 			workInProgress = null;
 		}
 	} while (true);
+	const finishedWork = root.current.alternate;
+	root.finishedWork = finishedWork;
+	commitRoot(root);
 }
 function workLoop() {
 	while (workInProgress !== null) {
@@ -73,7 +78,7 @@ function performUnitOfWork(unitOfWork: FiberNode) {
 function completeUnitOfWork(unitOfWork: FiberNode) {
 	let completedWork: FiberNode | null = unitOfWork;
 	do {
-		completeWork(unitOfWork);
+		completeWork(completedWork);
 		const sibling = completedWork.sibling;
 		if (sibling !== null) {
 			workInProgress = sibling;
@@ -82,4 +87,29 @@ function completeUnitOfWork(unitOfWork: FiberNode) {
 		completedWork = completedWork.return;
 		workInProgress = completedWork;
 	} while (completedWork !== null);
+}
+
+function commitRoot(root: FiberRootNode) {
+	const finishedWork = root.finishedWork;
+	if (__DEV__) {
+		console.warn('commit阶段开始', finishedWork);
+	}
+	if (finishedWork === null) {
+		return;
+	}
+	// 重置finishedWork
+	root.finishedWork = null;
+	// 判断是否需要有对应的更新标志 root flags / root subtreeFlags
+	const subtreeHasEffect = (finishedWork.subtreeFlags & MutationMask) !== NoFlags;
+	const rootHasEffect = (finishedWork.flags & MutationMask) !== NoFlags;
+
+	if (subtreeHasEffect || rootHasEffect) {
+		// beforeMutation
+
+		// mutation
+		commitMutationEffects(finishedWork);
+		root.current = finishedWork;
+		// layout
+	}
+
 }

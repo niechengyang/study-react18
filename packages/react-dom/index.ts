@@ -6,14 +6,9 @@
  *
  * @file: [功能描述]
  *
- * @date: 2023/1/8 15:55:52
+ * @date: 2023/1/29 19:53:32
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-export type Flags = number;
+import * as ReactDom from './src/root';
 
-export const NoFlags = 0b0000000;
-export const Placement = 0b0000001;
-export const Update = 0b0000010;
-export const ChildDeletion = 0b000100;
-
-export const MutationMask = Placement | Update | ChildDeletion;
+export default ReactDom;
