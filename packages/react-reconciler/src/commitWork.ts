@@ -20,7 +20,10 @@ export const commitMutationEffects = (finishedWork: FiberNode) => {
 	while (nextEffect !== null) {
 		// 向下遍历
 		const child: FiberNode | null = nextEffect.child;
-		if ((nextEffect.subtreeFlags & MutationMask) !== NoFlags && child !== null) {
+		if (
+			(nextEffect.subtreeFlags & MutationMask) !== NoFlags &&
+			child !== null
+		) {
 			nextEffect = child;
 		} else {
 			// 向上遍历
@@ -35,7 +38,7 @@ export const commitMutationEffects = (finishedWork: FiberNode) => {
 			}
 		}
 	}
-}
+};
 
 const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 	const flags = finishedWork.flags;
@@ -46,7 +49,7 @@ const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 
 	// flags Update
 	// flags ChildDeletion
-}
+};
 
 const commitPlacement = (finishedWork: FiberNode) => {
 	if (__DEV__) {
@@ -57,7 +60,7 @@ const commitPlacement = (finishedWork: FiberNode) => {
 	if (hostParent !== null) {
 		appendPlacementNodeIntoContainer(finishedWork, hostParent);
 	}
-}
+};
 
 const getHostParent = (finishedWork: FiberNode) => {
 	let parent = finishedWork.return;
@@ -76,7 +79,7 @@ const getHostParent = (finishedWork: FiberNode) => {
 		console.warn('未找到host parent');
 	}
 	return null;
-}
+};
 
 function appendPlacementNodeIntoContainer(
 	finishedWork: FiberNode,

@@ -100,7 +100,8 @@ function commitRoot(root: FiberRootNode) {
 	// 重置finishedWork
 	root.finishedWork = null;
 	// 判断是否需要有对应的更新标志 root flags / root subtreeFlags
-	const subtreeHasEffect = (finishedWork.subtreeFlags & MutationMask) !== NoFlags;
+	const subtreeHasEffect =
+		(finishedWork.subtreeFlags & MutationMask) !== NoFlags;
 	const rootHasEffect = (finishedWork.flags & MutationMask) !== NoFlags;
 
 	if (subtreeHasEffect || rootHasEffect) {
@@ -111,5 +112,4 @@ function commitRoot(root: FiberRootNode) {
 		root.current = finishedWork;
 		// layout
 	}
-
 }
