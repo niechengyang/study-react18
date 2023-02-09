@@ -10,10 +10,11 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import { HostComponent, HostRoot, HostText } from './workTag';
+import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
 import { processUpdateQueue, UpdateQueue } from './updateQueue';
 import { ReactElementType } from 'shared/ReactTypes';
 import { mountChildFibers, reconcileChildFibers } from './childFiber';
+import { renderWithHooks } from './fiberHooks';
 
 export const beginWork = (wip: FiberNode) => {
 	// <A><B/></A>
@@ -23,6 +24,8 @@ export const beginWork = (wip: FiberNode) => {
 			return updateHostRoot(wip);
 		case HostComponent:
 			return updateHostComponent(wip);
+		case FunctionComponent:
+			return updateFunctionComponent(wip);
 		case HostText:
 			return null;
 		default:
@@ -34,7 +37,11 @@ export const beginWork = (wip: FiberNode) => {
 	return null;
 	// 递归中的递阶段，返回子fiberNode
 };
-
+function updateFunctionComponent(wip: FiberNode) {
+	const nextChildren = renderWithHooks(wip);
+	reconcileChildren(wip, nextChildren);
+	return wip.child;
+}
 function updateHostRoot(wip: FiberNode) {
 	// 计算出最新的更新状态，生成子fiberNode
 	const baseState = wip.memoizedState;

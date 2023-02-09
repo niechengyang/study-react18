@@ -10,7 +10,7 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import { HostComponent, HostRoot, HostText } from './workTag';
+import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
 import {
 	appendInitialChild,
 	createInstance,
@@ -43,6 +43,10 @@ export const completeWork = (wip: FiberNode) => {
 				// 1. 构建DOM
 				wip.stateNode = createTextInstance(newProps.context);
 			}
+			bubbleProperties(wip);
+			return null;
+		case FunctionComponent:
+			console.log('函数式组件归阶段');
 			bubbleProperties(wip);
 			return null;
 		case HostRoot:
