@@ -10,4 +10,3 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 export { jsxDEV } from './src/jsx';
-

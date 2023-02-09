@@ -10,7 +10,12 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
+import {
+	FunctionComponent,
+	HostComponent,
+	HostRoot,
+	HostText
+} from './workTag';
 import {
 	appendInitialChild,
 	createInstance,

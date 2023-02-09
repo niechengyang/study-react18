@@ -10,7 +10,12 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
+import {
+	FunctionComponent,
+	HostComponent,
+	HostRoot,
+	HostText
+} from './workTag';
 import { processUpdateQueue, UpdateQueue } from './updateQueue';
 import { ReactElementType } from 'shared/ReactTypes';
 import { mountChildFibers, reconcileChildFibers } from './childFiber';
