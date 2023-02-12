@@ -10,11 +10,13 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { jsxDEV } from './src/jsx';
-import currentDispatcher, { Dispatcher, resolveDispatcher, Dispatch } from './src/currentDispatcher';
+import currentDispatcher, {
+	Dispatcher,
+	resolveDispatcher,
+	Dispatch
+} from './src/currentDispatcher';
 // useState
-export function useState<S>(
-	initialState: (() => S) | S,
-): [S, Dispatch<S>] {
+export function useState<S>(initialState: (() => S) | S): [S, Dispatch<S>] {
 	const dispatcher = resolveDispatcher();
 	return dispatcher.useState(initialState);
 }

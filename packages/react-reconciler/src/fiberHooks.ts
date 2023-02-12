@@ -12,21 +12,26 @@
 import { FiberNode } from './fiber';
 import { Dispatcher, Dispatch } from 'react/src/currentDispatcher';
 import internals from 'shared/internals';
-import { createUpdate, createUpdateQueue, enqueueUpdate, UpdateQueue } from './updateQueue';
+import {
+	createUpdate,
+	createUpdateQueue,
+	enqueueUpdate,
+	UpdateQueue
+} from './updateQueue';
 import { Action } from 'shared/ReactTypes';
 import { scheduleUpdateOnFiber } from './workLoop';
 
-const  { currentDispatcher } = internals;
+const { currentDispatcher } = internals;
 export type Hook = {
-	memoizedState: any,
-	updateQueue: any,
-	next: Hook | null,
+	memoizedState: any;
+	updateQueue: any;
+	next: Hook | null;
 };
 let workInProgressHook: Hook | null = null;
 let currentlyRenderingFiber: FiberNode | null = null;
 
 const HooksDispatcherOnMount: Dispatcher = {
-	useState: mountState,
+	useState: mountState
 };
 
 function mountState<State>(
@@ -41,12 +46,20 @@ function mountState<State>(
 	const updateQueue = createUpdateQueue<State>();
 	hook.updateQueue = updateQueue;
 	// @ts-ignore
-	const dispatch = dispatchSetState.bind(null, currentlyRenderingFiber, updateQueue);
+	const dispatch = dispatchSetState.bind(
+		null,
+		currentlyRenderingFiber,
+		updateQueue
+	);
 	updateQueue.dispatch = dispatch;
 	return [initialState, dispatch];
 }
 
-function dispatchSetState<State>(fiber: FiberNode, updateQueue: UpdateQueue<State>, action: Action<State>) {
+function dispatchSetState<State>(
+	fiber: FiberNode,
+	updateQueue: UpdateQueue<State>,
+	action: Action<State>
+) {
 	const update = createUpdate(action);
 	enqueueUpdate(updateQueue, update);
 	scheduleUpdateOnFiber(fiber);
@@ -56,7 +69,7 @@ function mountWorkInProgressHook(): Hook {
 	const hook: Hook = {
 		memoizedState: null,
 		updateQueue: null,
-		next: null,
+		next: null
 	};
 	if (workInProgressHook === null) {
 		// This is the first hook in the list
@@ -72,7 +85,7 @@ function mountWorkInProgressHook(): Hook {
 }
 export function renderWithHooks(wip: FiberNode) {
 	// 赋值
-	currentlyRenderingFiber = wip
+	currentlyRenderingFiber = wip;
 	// 重置
 	wip.memoizedState = null;
 	const current = wip.alternate;
@@ -84,7 +97,7 @@ export function renderWithHooks(wip: FiberNode) {
 	}
 	const component = wip.type;
 	const props = wip.pendingProps;
-	const children =  component(props);
+	const children = component(props);
 
 	// 重置操作
 	currentlyRenderingFiber = null;
