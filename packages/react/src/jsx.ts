@@ -40,7 +40,15 @@ const ReactElement = function (
 	};
 	return element;
 };
-
+export function isValidElement(object: ReactElementType) {
+	{
+		return (
+			typeof object === 'object' &&
+			object !== null &&
+			object.$$typeof === REACT_ELEMENT_TYPE
+		);
+	}
+}
 export function jsx(type: ElementType, config: any, ...maybeChildren: any) {
 	let key: Key = null;
 	let ref: Ref = null;

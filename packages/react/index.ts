@@ -9,7 +9,7 @@
  * @date: 2023/1/6 20:38:49
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { jsxDEV } from './src/jsx';
+import { jsxDEV, jsx, isValidElement as isValidElementFn } from './src/jsx';
 import currentDispatcher, {
 	Dispatcher,
 	resolveDispatcher,
@@ -25,8 +25,8 @@ export function useState<S>(initialState: (() => S) | S): [S, Dispatch<S>] {
 export const __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
 	currentDispatcher
 };
-// React
-export default {
-	version: '0.0.0',
-	createElement: jsxDEV
-};
+
+export const version = '0.0.0';
+export const createElement = jsx;
+
+export const isValidElement = isValidElementFn;
