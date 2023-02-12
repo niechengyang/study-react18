@@ -9,13 +9,14 @@
  * @date: 2023/2/5 13:01:33
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import React from 'react';
+import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
 function App() {
+	const [num, setNum] = useState(0);
 	return (
 		<div>
-			<Child />
+			{ num }
 		</div>
 	);
 }
