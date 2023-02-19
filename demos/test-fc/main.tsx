@@ -15,16 +15,15 @@ import ReactDOM from 'react-dom/client';
 function App() {
 	const [num, setNum] = useState(0);
 	return (
-		<div>
+		num === 0 ? <div>
 			{ num }
-		</div>
+		</div> : <Child />
 	);
 }
 
 function Child() {
 	return <span>big-react</span>;
 }
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<App />
 );

@@ -10,9 +10,9 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode, FiberRootNode } from './fiber';
-import { MutationMask, NoFlags, Placement } from './fiberFlags';
-import { HostComponent, HostRoot, HostText } from './workTag';
-import { appendChildToContainer, Container } from 'hostConfig';
+import { ChildDeletion, MutationMask, NoFlags, Placement, Update } from './fiberFlags';
+import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
+import { appendChildToContainer, commitUpdate, Container, removeChild } from 'hostConfig';
 
 let nextEffect: FiberNode | null = null;
 export const commitMutationEffects = (finishedWork: FiberNode) => {
@@ -48,9 +48,80 @@ const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 	}
 
 	// flags Update
+	if ((flags & Update) !== NoFlags) {
+		commitUpdate(finishedWork);
+		finishedWork.flags &= ~Update;
+	}
 	// flags ChildDeletion
+	if ((flags & ChildDeletion) !== NoFlags) {
+		const deletions = finishedWork.deletions;
+		deletions && deletions.forEach(deletion => {
+			commitDeletion(deletion);
+		})
+		finishedWork.flags &= ~ChildDeletion;
+	}
 };
-
+// 删除子节点，清除一些副作用
+function commitDeletion(childToDeletion: FiberNode) {
+	let rootHostNode: FiberNode | null = null
+	commitNestedComponent(childToDeletion, (unmountFiber) => {
+		switch (unmountFiber.tag) {
+			case HostText:
+				if (rootHostNode === null) {
+					rootHostNode = unmountFiber;
+				}
+				return;
+			case HostComponent:
+				if (rootHostNode === null) {
+					rootHostNode = unmountFiber;
+				}
+				// 解绑ref
+				return;
+			case FunctionComponent:
+				// TODO useEffect unmount 、解绑ref
+				return;
+			default:
+				if (__DEV__) {
+					console.warn('未处理的unmount类型', unmountFiber);
+				}
+				return;
+		}
+	})
+	if (rootHostNode !== null) {
+		const hostParent = getHostParent(childToDeletion);
+		if (hostParent !== null) {
+			removeChild((rootHostNode as FiberNode).stateNode, hostParent);
+		}
+	}
+	childToDeletion.return = null;
+	childToDeletion.child = null;
+}
+// 递归的执行卸载组件的钩子函数
+function commitNestedComponent(
+	root: FiberNode,
+	onCommitUnmount: (fiber: FiberNode) => void
+) {
+	let node = root;
+	while (true) {
+		onCommitUnmount(node);
+		if (node.child !== null) {
+			// 向下遍历，保险操作，保持链接关系
+			node.child.return = node;
+			node = node.child;
+			continue;
+		}
+		if (node === root) return;
+		while (node.sibling === null) {
+			// 向上查找
+			if (node.return === null || node.return === root) {
+				return;
+			}
+			node = node.return;
+		}
+		node.sibling.return = node;
+		node = node.sibling;
+	}
+}
 const commitPlacement = (finishedWork: FiberNode) => {
 	if (__DEV__) {
 		console.warn('执行Placement操作', finishedWork);

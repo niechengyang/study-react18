@@ -21,8 +21,11 @@ import {
 	createInstance,
 	createTextInstance
 } from 'hostConfig';
-import { NoFlags } from './fiberFlags';
+import { NoFlags, Update } from './fiberFlags';
 
+function markUpdate(fiber: FiberNode) {
+	fiber.flags |= Update;
+}
 export const completeWork = (wip: FiberNode) => {
 	// 递归中的归阶段，返回父fiberNode
 	const newProps = wip.pendingProps;
@@ -44,9 +47,14 @@ export const completeWork = (wip: FiberNode) => {
 		case HostText:
 			if (current !== null && wip.stateNode) {
 				// update
+				const oldText = current.memoizedProps.content;
+				const newText = newProps.content;
+				if (oldText !== newText) {
+					markUpdate(wip)
+				}
 			} else {
 				// 1. 构建DOM
-				wip.stateNode = createTextInstance(newProps.context);
+				wip.stateNode = createTextInstance(newProps.content);
 			}
 			bubbleProperties(wip);
 			return null;
