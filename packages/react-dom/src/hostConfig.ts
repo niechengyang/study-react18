@@ -41,13 +41,13 @@ export function commitUpdate(fiber: FiberNode) {
 			return commitTextUpdate(fiber.stateNode, text);
 		default:
 			if (__DEV__) {
-				console.warn('未实现其他类型的update', fiber)
+				console.warn('未实现其他类型的update', fiber);
 			}
 			break;
 	}
 }
 export function commitTextUpdate(textInstance: TextInstance, content: string) {
-	textInstance.textContent = content
+	textInstance.textContent = content;
 }
 
 export function removeChild(child: TextInstance | Instance, parent: Container) {

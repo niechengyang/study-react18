@@ -9,7 +9,11 @@
  * @date: 2023/1/15 14:53:21
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { createFiberFromElement, createWorkInProgress, FiberNode } from './fiber';
+import {
+	createFiberFromElement,
+	createWorkInProgress,
+	FiberNode
+} from './fiber';
 import { Props, ReactElementType } from 'shared/ReactTypes';
 import { ChildDeletion, Placement } from './fiberFlags';
 import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols';
@@ -22,10 +26,7 @@ function useFiber(fiber: FiberNode, props: Props) {
 	return clone;
 }
 function createChildReconciler(shouldTrackSideEffects: boolean) {
-	function deleteChild(
-		returnFiber: FiberNode,
-		childToDelete: FiberNode,
-	) {
+	function deleteChild(returnFiber: FiberNode, childToDelete: FiberNode) {
 		if (!shouldTrackSideEffects) {
 			return;
 		}
@@ -36,7 +37,6 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 		} else {
 			deletions.push(childToDelete);
 		}
-
 	}
 	function reconcileSingleElement(
 		returnFiber: FiberNode,
@@ -78,7 +78,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 	) {
 		if (currentFiber !== null) {
 			if (currentFiber.tag === HostText) {
-				const exist = useFiber(returnFiber, { content })
+				const exist = useFiber(returnFiber, { content });
 				exist.return = returnFiber;
 				return exist;
 			}

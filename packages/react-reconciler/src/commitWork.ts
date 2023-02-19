@@ -10,9 +10,25 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode, FiberRootNode } from './fiber';
-import { ChildDeletion, MutationMask, NoFlags, Placement, Update } from './fiberFlags';
-import { FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
-import { appendChildToContainer, commitUpdate, Container, removeChild } from 'hostConfig';
+import {
+	ChildDeletion,
+	MutationMask,
+	NoFlags,
+	Placement,
+	Update
+} from './fiberFlags';
+import {
+	FunctionComponent,
+	HostComponent,
+	HostRoot,
+	HostText
+} from './workTag';
+import {
+	appendChildToContainer,
+	commitUpdate,
+	Container,
+	removeChild
+} from 'hostConfig';
 
 let nextEffect: FiberNode | null = null;
 export const commitMutationEffects = (finishedWork: FiberNode) => {
@@ -55,15 +71,16 @@ const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 	// flags ChildDeletion
 	if ((flags & ChildDeletion) !== NoFlags) {
 		const deletions = finishedWork.deletions;
-		deletions && deletions.forEach(deletion => {
-			commitDeletion(deletion);
-		})
+		deletions &&
+			deletions.forEach((deletion) => {
+				commitDeletion(deletion);
+			});
 		finishedWork.flags &= ~ChildDeletion;
 	}
 };
 // 删除子节点，清除一些副作用
 function commitDeletion(childToDeletion: FiberNode) {
-	let rootHostNode: FiberNode | null = null
+	let rootHostNode: FiberNode | null = null;
 	commitNestedComponent(childToDeletion, (unmountFiber) => {
 		switch (unmountFiber.tag) {
 			case HostText:
@@ -86,7 +103,7 @@ function commitDeletion(childToDeletion: FiberNode) {
 				}
 				return;
 		}
-	})
+	});
 	if (rootHostNode !== null) {
 		const hostParent = getHostParent(childToDeletion);
 		if (hostParent !== null) {

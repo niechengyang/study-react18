@@ -50,7 +50,7 @@ export const completeWork = (wip: FiberNode) => {
 				const oldText = current.memoizedProps.content;
 				const newText = newProps.content;
 				if (oldText !== newText) {
-					markUpdate(wip)
+					markUpdate(wip);
 				}
 			} else {
 				// 1. 构建DOM

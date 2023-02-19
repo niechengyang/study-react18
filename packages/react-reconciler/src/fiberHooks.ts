@@ -15,7 +15,8 @@ import internals from 'shared/internals';
 import {
 	createUpdate,
 	createUpdateQueue,
-	enqueueUpdate, processUpdateQueue,
+	enqueueUpdate,
+	processUpdateQueue,
 	UpdateQueue
 } from './updateQueue';
 import { Action } from 'shared/ReactTypes';
@@ -37,7 +38,7 @@ const HooksDispatcherOnMount: Dispatcher = {
 
 const HooksDispatcherOnUpdate: Dispatcher = {
 	useState: updateState
-}
+};
 function updateState<State>(): [State, Dispatch<State>] {
 	// 拿到hook对应的数据
 	const hook = updateWorkInProgressHook();
@@ -49,7 +50,6 @@ function updateState<State>(): [State, Dispatch<State>] {
 		hook.memoizedState = memoizedState;
 	}
 	return [hook.memoizedState, queue.dispatch as Dispatch<State>];
-
 }
 
 function mountState<State>(
