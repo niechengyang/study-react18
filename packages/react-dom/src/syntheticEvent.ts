@@ -47,7 +47,7 @@ export function initEvent(container: Container, eventType: string) {
 	}
 	container.addEventListener(eventType, (e) => {
 		dispatchEvent(container, eventType, e);
-	})
+	});
 }
 
 function dispatchEvent(container: Container, eventType: string, e: Event) {
@@ -65,10 +65,13 @@ function dispatchEvent(container: Container, eventType: string, e: Event) {
 	if (!se.__stopPropagation) {
 		triggerEventFlow(bubble, se);
 	}
-
 }
 
-function collectPaths(targetElement: DOMElement, container: Container, eventType: string) {
+function collectPaths(
+	targetElement: DOMElement,
+	container: Container,
+	eventType: string
+) {
 	const paths: Paths = {
 		bubble: [],
 		capture: []
@@ -81,13 +84,13 @@ function collectPaths(targetElement: DOMElement, container: Container, eventType
 				callbackNameList.forEach((callbackName, i) => {
 					const callbackEvent = props[callbackName];
 					if (callbackEvent) {
-						if (i === 0 ){
+						if (i === 0) {
 							paths.capture.unshift(callbackEvent);
 						} else {
 							paths.bubble.push(callbackEvent);
 						}
 					}
-				})
+				});
 			}
 		}
 		targetElement = targetElement.parentNode as DOMElement;
@@ -95,10 +98,12 @@ function collectPaths(targetElement: DOMElement, container: Container, eventType
 	return paths;
 }
 
-function getEventCallbackNameFromEventType(evetype: string): string[] | undefined {
+function getEventCallbackNameFromEventType(
+	evetype: string
+): string[] | undefined {
 	return {
 		click: ['onClickCapture', 'onClick']
-	}[evetype]
+	}[evetype];
 }
 
 function createSyntheticEvent(e: Event) {
@@ -110,7 +115,7 @@ function createSyntheticEvent(e: Event) {
 		if (originStopPropagation) {
 			originStopPropagation.apply(e);
 		}
-	}
+	};
 	return syntheticEvent;
 }
 
