@@ -11,15 +11,17 @@
  */
 import { FiberNode } from 'react-reconciler/src/fiber';
 import { HostText } from 'react-reconciler/src/workTag';
+import { Props } from 'shared/ReactTypes';
+import { DOMElement, updateFiberProps } from './syntheticEvent';
 
 export type Container = Element;
 export type Instance = Element;
 export type TextInstance = Text;
 
 // export const createInstance = (type: string, props: any): Instance => {
-export const createInstance = (type: string): Instance => {
-	// TODO 处理props
-	const element = document.createElement(type);
+export const createInstance = (type: string, props: Props): Instance => {
+	const element = document.createElement(type, props) as Element;
+	updateFiberProps(element as DOMElement, props);
 	return element;
 };
 

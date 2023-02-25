@@ -78,7 +78,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 	) {
 		if (currentFiber !== null) {
 			if (currentFiber.tag === HostText) {
-				const exist = useFiber(returnFiber, { content });
+				const exist = useFiber(currentFiber, { content });
 				exist.return = returnFiber;
 				return exist;
 			}

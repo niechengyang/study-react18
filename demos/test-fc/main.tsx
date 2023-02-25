@@ -15,15 +15,21 @@ import ReactDOM from 'react-dom/client';
 function App() {
 	const [num, setNum] = useState(0);
 	return (
-		num === 0 ? <div>
-			{ num }
-		</div> : <Child />
+		<div onClick={() => {
+			console.log('div点击')
+		}}>
+			<span onClick={(e) => {
+				e.stopPropagation();
+				setNum(num + 1)
+				console.log('span点击')
+			}}>{num}</span>
+		</div>
 	);
 }
 
-function Child() {
-	return <span>big-react</span>;
-}
+// function Child() {
+// 	return <span>big-react</span>;
+// }
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<App />
 );
