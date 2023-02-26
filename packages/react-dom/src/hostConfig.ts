@@ -57,3 +57,11 @@ export function removeChild(child: TextInstance | Instance, parent: Container) {
 }
 
 export const appendChildToContainer = appendInitialChild;
+
+export function insertChildToContainer(
+	child: Instance,
+	container: Container,
+	before: Instance
+) {
+	container.insertBefore(child, before);
+}

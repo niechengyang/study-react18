@@ -26,7 +26,7 @@ import {
 import {
 	appendChildToContainer,
 	commitUpdate,
-	Container,
+	Container, insertChildToContainer, Instance,
 	removeChild
 } from 'hostConfig';
 
@@ -145,8 +145,10 @@ const commitPlacement = (finishedWork: FiberNode) => {
 	}
 	// get parent dom
 	const hostParent = getHostParent(finishedWork);
+	const sibling = getHostSibling(finishedWork);
+	// get s
 	if (hostParent !== null) {
-		appendPlacementNodeIntoContainer(finishedWork, hostParent);
+		insertOrAppendPlacementNodeIntoContainer(finishedWork, hostParent, sibling);
 	}
 };
 
@@ -169,23 +171,60 @@ const getHostParent = (finishedWork: FiberNode) => {
 	return null;
 };
 
-function appendPlacementNodeIntoContainer(
+function insertOrAppendPlacementNodeIntoContainer(
 	finishedWork: FiberNode,
-	hostParent: Container
+	hostParent: Container,
+	before?: Instance,
 ) {
 	// fiber host
 	if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
-		appendChildToContainer(hostParent, finishedWork.stateNode);
+		if (before) {
+			insertChildToContainer(finishedWork.stateNode, hostParent, before);
+		} else {
+			appendChildToContainer(hostParent, finishedWork.stateNode);
+		}
 		return;
 	}
 	const child = finishedWork.child;
 	if (child !== null) {
-		appendPlacementNodeIntoContainer(child, hostParent);
+		insertOrAppendPlacementNodeIntoContainer(child, hostParent, before);
 		let sibling = child.sibling;
 
 		while (sibling !== null) {
-			appendPlacementNodeIntoContainer(sibling, hostParent);
+			insertOrAppendPlacementNodeIntoContainer(sibling, hostParent, before);
 			sibling = sibling.sibling;
+		}
+	}
+}
+
+function getHostSibling(fiber: FiberNode) {
+	let node: FiberNode = fiber;
+	sibling: while (true) {
+		while (node.sibling === null) {
+			// 向上遍历，找sibling
+			const parent = node.return;
+			if (parent === null || parent.tag === HostComponent || parent.tag === HostRoot) {
+				return null;
+			}
+			node = parent;
+		}
+		node.sibling.return = node.return;
+		node = node.sibling;
+		// 向下遍历
+		while (node.tag !== HostComponent && node.tag !== HostText) {
+			// 这个节点本身不是一个稳定的节点
+			if ((node.flags & Placement)!== NoFlags) {
+				continue sibling;
+			}
+			if (node.child === null) {
+				continue sibling;
+			}  else {
+				node.child.return = node;
+				node = node.child;
+			}
+		}
+		if ((node.flags & Placement) === NoFlags) {
+			return node.stateNode;
 		}
 	}
 }
