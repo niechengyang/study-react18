@@ -26,7 +26,9 @@ import {
 import {
 	appendChildToContainer,
 	commitUpdate,
-	Container, insertChildToContainer, Instance,
+	Container,
+	insertChildToContainer,
+	Instance,
 	removeChild
 } from 'hostConfig';
 
@@ -174,7 +176,7 @@ const getHostParent = (finishedWork: FiberNode) => {
 function insertOrAppendPlacementNodeIntoContainer(
 	finishedWork: FiberNode,
 	hostParent: Container,
-	before?: Instance,
+	before?: Instance
 ) {
 	// fiber host
 	if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
@@ -203,7 +205,11 @@ function getHostSibling(fiber: FiberNode) {
 		while (node.sibling === null) {
 			// 向上遍历，找sibling
 			const parent = node.return;
-			if (parent === null || parent.tag === HostComponent || parent.tag === HostRoot) {
+			if (
+				parent === null ||
+				parent.tag === HostComponent ||
+				parent.tag === HostRoot
+			) {
 				return null;
 			}
 			node = parent;
@@ -213,12 +219,12 @@ function getHostSibling(fiber: FiberNode) {
 		// 向下遍历
 		while (node.tag !== HostComponent && node.tag !== HostText) {
 			// 这个节点本身不是一个稳定的节点
-			if ((node.flags & Placement)!== NoFlags) {
+			if ((node.flags & Placement) !== NoFlags) {
 				continue sibling;
 			}
 			if (node.child === null) {
 				continue sibling;
-			}  else {
+			} else {
 				node.child.return = node;
 				node = node.child;
 			}

@@ -38,7 +38,10 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 			deletions.push(childToDelete);
 		}
 	}
-	function deleteRemainingChildren(returnFiber: FiberNode, currentFirstChild: FiberNode | null) {
+	function deleteRemainingChildren(
+		returnFiber: FiberNode,
+		currentFirstChild: FiberNode | null
+	) {
 		if (!shouldTrackSideEffects) return;
 		let childToDelete = currentFirstChild;
 		while (childToDelete !== null) {
@@ -110,10 +113,12 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 		}
 		return newFiber;
 	}
-	function updateFromMap(existingChildren: Map<string | number, FiberNode>,
-												 returnFiber: FiberNode,
-												 newIdx: number,
-												 newChild: any): FiberNode | null {
+	function updateFromMap(
+		existingChildren: Map<string | number, FiberNode>,
+		returnFiber: FiberNode,
+		newIdx: number,
+		newChild: any
+	): FiberNode | null {
 		const keyToUse = newChild.key !== null ? newChild.key : newIdx;
 		const before = existingChildren.get(keyToUse);
 		// hostText
@@ -134,7 +139,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 						if (before.type === newChild.type) {
 							// 可复用
 							existingChildren.delete(keyToUse);
-							return useFiber(before, newChild.props)
+							return useFiber(before, newChild.props);
 						}
 					}
 					return createFiberFromElement(newChild);
@@ -146,7 +151,11 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 		}
 		return null;
 	}
-	function reconcileChildrenArray(returnFiber: FiberNode, currentFirstChild: FiberNode | null, newChild: any[]) {
+	function reconcileChildrenArray(
+		returnFiber: FiberNode,
+		currentFirstChild: FiberNode | null,
+		newChild: any[]
+	) {
 		// 最后一个可复用的fiber在current中的index
 		let lastPlacedIndex = 0;
 		// 最后一个创建的fiber
@@ -167,7 +176,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 				existingChildren,
 				returnFiber,
 				i,
-				newChild[i],
+				newChild[i]
 			);
 			if (newFiber === null) continue;
 			// 3.标记移动还是插入
@@ -197,9 +206,9 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 			}
 		}
 		// 4、将剩下的节点标记为删除
-		existingChildren.forEach(childToDelete => {
+		existingChildren.forEach((childToDelete) => {
 			deleteChild(returnFiber, childToDelete);
-		})
+		});
 		return firstNewFiber;
 	}
 	return function reconcileChildFibers(
@@ -221,11 +230,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 			}
 			// 多节点diff
 			if (Array.isArray(newChild)) {
-				return reconcileChildrenArray(
-					returnFiber,
-					currentFiber,
-					newChild,
-				);
+				return reconcileChildrenArray(returnFiber, currentFiber, newChild);
 			}
 		}
 		// HostText
