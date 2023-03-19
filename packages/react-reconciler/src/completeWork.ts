@@ -10,8 +10,18 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import { Fragment, FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
-import { appendInitialChild, createInstance, createTextInstance } from 'hostConfig';
+import {
+	Fragment,
+	FunctionComponent,
+	HostComponent,
+	HostRoot,
+	HostText
+} from './workTag';
+import {
+	appendInitialChild,
+	createInstance,
+	createTextInstance
+} from 'hostConfig';
 import { updateFiberProps } from 'react-dom/src/SyntheticEvent';
 import { NoFlags, Update } from './fiberFlags';
 

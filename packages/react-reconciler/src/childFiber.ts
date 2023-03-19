@@ -9,7 +9,12 @@
  * @date: 2023/1/15 14:53:21
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { createFiberFromElement, createFiberFromFragment, createWorkInProgress, FiberNode } from './fiber';
+import {
+	createFiberFromElement,
+	createFiberFromFragment,
+	createWorkInProgress,
+	FiberNode
+} from './fiber';
 import { Key, Props, ReactElementType } from 'shared/ReactTypes';
 import { ChildDeletion, Placement } from './fiberFlags';
 import { REACT_ELEMENT_TYPE, REACT_FRAGMENT_TYPE } from 'shared/ReactSymbols';
@@ -124,8 +129,8 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 		current: FiberNode | undefined,
 		existingChildren: Map<string | number, FiberNode>,
 		elements: any[],
-		key: Key,
-	) : FiberNode {
+		key: Key
+	): FiberNode {
 		let fiber;
 		if (!current || current.tag !== Fragment) {
 			fiber = createFiberFromFragment(elements, key);
@@ -165,7 +170,7 @@ function createChildReconciler(shouldTrackSideEffects: boolean) {
 							existingChildren,
 							newChild,
 							keyToUse
-						)
+						);
 					}
 					if (before) {
 						if (before.type === newChild.type) {
