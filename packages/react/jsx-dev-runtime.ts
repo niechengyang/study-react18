@@ -9,4 +9,4 @@
  * @date: 2023/1/6 20:38:49
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-export { jsxDEV } from './src/jsx';
+export { jsxDEV, Fragment } from './src/jsx';

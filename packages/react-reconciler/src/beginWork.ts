@@ -10,12 +10,7 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import {
-	FunctionComponent,
-	HostComponent,
-	HostRoot,
-	HostText
-} from './workTag';
+import { Fragment, FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
 import { processUpdateQueue, UpdateQueue } from './updateQueue';
 import { ReactElementType } from 'shared/ReactTypes';
 import { mountChildFibers, reconcileChildFibers } from './childFiber';
@@ -31,6 +26,8 @@ export const beginWork = (wip: FiberNode) => {
 			return updateHostComponent(wip);
 		case FunctionComponent:
 			return updateFunctionComponent(wip);
+		case Fragment:
+			return updateFragmentComponent(wip);
 		case HostText:
 			return null;
 		default:
@@ -42,6 +39,11 @@ export const beginWork = (wip: FiberNode) => {
 	return null;
 	// 递归中的递阶段，返回子fiberNode
 };
+function updateFragmentComponent(wip: FiberNode) {
+	const nextChildren = wip.pendingProps;
+	reconcileChildren(wip, nextChildren);
+	return wip.child;
+}
 function updateFunctionComponent(wip: FiberNode) {
 	const nextChildren = renderWithHooks(wip);
 	reconcileChildren(wip, nextChildren);

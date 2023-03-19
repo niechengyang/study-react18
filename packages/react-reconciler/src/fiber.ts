@@ -10,10 +10,11 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { Key, Props, ReactElementType, Ref } from 'shared/ReactTypes';
-import { FunctionComponent, HostComponent, WorkTag } from './workTag';
+import { Fragment, FunctionComponent, HostComponent, WorkTag } from './workTag';
 import { Flags, NoFlags } from './fiberFlags';
 // @ts-ignore
 import { Container } from 'hostConfig';
+
 export class FiberNode {
 	tag: WorkTag;
 	key: Key;
@@ -38,7 +39,7 @@ export class FiberNode {
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
 		// 作为实例
 		this.tag = tag;
-		this.key = key;
+		this.key = key || null;
 		this.type = null;
 		// 保存当前节点的dom元素
 		this.stateNode = null;
@@ -109,5 +110,10 @@ export function createFiberFromElement(element: ReactElementType): FiberNode {
 	}
 	const fiber = new FiberNode(fiberTag, props, key);
 	fiber.type = type;
+	return fiber;
+}
+
+export function createFiberFromFragment(elements: any[], key: Key): FiberNode {
+	const fiber = new FiberNode(Fragment, elements, key);
 	return fiber;
 }

@@ -20,8 +20,14 @@ function App() {
 		num % 2 === 0
 			? [<li key="1">1</li>, <li key="2">2</li>, <li key="3">3</li>]
 			: [<li key="3">3</li>, <li key="2">2</li>, <li key="1">1</li>];
-	console.log(arr);
-	return <ul onClickCapture={() => setNum(num + 1)}>{arr}</ul>;
+	const A = [<li>c</li>, <li>d</li>]
+	console.log(A);
+	return <ul>
+		<li>a</li>
+		<li>b</li>
+		{A}
+	</ul>;
+	// return <ul onClickCapture={() => setNum(num + 1)}>{arr}</ul>;
 }
 
 // function Child() {

@@ -10,17 +10,8 @@
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
 import { FiberNode } from './fiber';
-import {
-	FunctionComponent,
-	HostComponent,
-	HostRoot,
-	HostText
-} from './workTag';
-import {
-	appendInitialChild,
-	createInstance,
-	createTextInstance
-} from 'hostConfig';
+import { Fragment, FunctionComponent, HostComponent, HostRoot, HostText } from './workTag';
+import { appendInitialChild, createInstance, createTextInstance } from 'hostConfig';
 import { updateFiberProps } from 'react-dom/src/SyntheticEvent';
 import { NoFlags, Update } from './fiberFlags';
 
@@ -62,6 +53,10 @@ export const completeWork = (wip: FiberNode) => {
 			return null;
 		case FunctionComponent:
 			console.log('函数式组件归阶段');
+			bubbleProperties(wip);
+			return null;
+		case Fragment:
+			console.log('Fragment归阶段');
 			bubbleProperties(wip);
 			return null;
 		case HostRoot:

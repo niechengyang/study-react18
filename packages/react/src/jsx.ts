@@ -9,7 +9,7 @@
  * @date: 2023/1/6 20:43:22
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbols';
+import { REACT_ELEMENT_TYPE, REACT_FRAGMENT_TYPE } from 'shared/ReactSymbols';
 import {
 	Type,
 	Key,
@@ -106,3 +106,5 @@ export const jsxDEV = (type: ElementType, config: any, maybeKey: any) => {
 
 	return ReactElement(type, key, ref, props);
 };
+
+export const Fragment = REACT_FRAGMENT_TYPE;
