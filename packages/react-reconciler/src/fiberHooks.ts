@@ -48,7 +48,11 @@ function updateState<State>(): [State, Dispatch<State>] {
 	const queue = hook.updateQueue as UpdateQueue<State>;
 	const pending = queue.shared.pending;
 	if (pending !== null) {
-		const { memoizedState } = processUpdateQueue(hook.memoizedState, pending, renderLane);
+		const { memoizedState } = processUpdateQueue(
+			hook.memoizedState,
+			pending,
+			renderLane
+		);
 		hook.memoizedState = memoizedState;
 	}
 	queue.shared.pending = null;

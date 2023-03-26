@@ -26,7 +26,10 @@ export interface UpdateQueue<State> {
 	dispatch: Dispatch<State> | null;
 }
 
-export const createUpdate = <State>(action: Action<State>, lane: Lane): Update<State> => {
+export const createUpdate = <State>(
+	action: Action<State>,
+	lane: Lane
+): Update<State> => {
 	return {
 		action,
 		lane,
@@ -63,7 +66,7 @@ export const enqueueUpdate = <State>(
 export const processUpdateQueue = <State>(
 	baseState: State,
 	pendingUpdate: Update<State> | null,
-	renderLane: Lane,
+	renderLane: Lane
 ): { memoizedState: State } => {
 	const result: ReturnType<typeof processUpdateQueue<State>> = {
 		memoizedState: baseState

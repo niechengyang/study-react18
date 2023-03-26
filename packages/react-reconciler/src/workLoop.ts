@@ -15,7 +15,14 @@ import { completeWork } from './completeWork';
 import { HostRoot } from './workTag';
 import { MutationMask, NoFlags } from './fiberFlags';
 import { commitMutationEffects } from './commitWork';
-import { getHighestPriorityLane, Lane, markRootFinished, mergeLane, NoLane, SyncLane } from './fiberLanes';
+import {
+	getHighestPriorityLane,
+	Lane,
+	markRootFinished,
+	mergeLane,
+	NoLane,
+	SyncLane
+} from './fiberLanes';
 import { flushSyncCallbacks, scheduleSyncCallback } from './syncTaskQueue';
 import { scheduleMicroTask } from 'hostConfig';
 // 当前工作的fiber节点
