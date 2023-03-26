@@ -62,7 +62,6 @@ export const completeWork = (wip: FiberNode) => {
 			bubbleProperties(wip);
 			return null;
 		case FunctionComponent:
-			console.log('函数式组件归阶段');
 			bubbleProperties(wip);
 			return null;
 		case Fragment:

@@ -11,9 +11,12 @@
  */
 import { Action } from 'shared/ReactTypes';
 import { Dispatch } from 'react/src/currentDispatcher';
+import { Lane } from './fiberLanes';
 
 export interface Update<State> {
 	action: Action<State>;
+	lane: Lane;
+	next: Update<any> | null;
 }
 
 export interface UpdateQueue<State> {
@@ -23,9 +26,11 @@ export interface UpdateQueue<State> {
 	dispatch: Dispatch<State> | null;
 }
 
-export const createUpdate = <State>(action: Action<State>): Update<State> => {
+export const createUpdate = <State>(action: Action<State>, lane: Lane): Update<State> => {
 	return {
-		action
+		action,
+		lane,
+		next: null
 	};
 };
 
@@ -42,25 +47,50 @@ export const enqueueUpdate = <State>(
 	updateQueue: UpdateQueue<State>,
 	update: Update<State>
 ) => {
+	const pending = updateQueue.shared.pending;
+	// pending 代表最后一次更新，pending.next 代表第一次 c -> a -> b -> c
+	if (pending === null) {
+		// a -> a
+		update.next = update;
+	} else {
+		// b -> a -> b
+		update.next = pending.next;
+		pending.next = update;
+	}
 	updateQueue.shared.pending = update;
 };
 
 export const processUpdateQueue = <State>(
 	baseState: State,
-	pendingUpdate: Update<State> | null
+	pendingUpdate: Update<State> | null,
+	renderLane: Lane,
 ): { memoizedState: State } => {
 	const result: ReturnType<typeof processUpdateQueue<State>> = {
 		memoizedState: baseState
 	};
 	if (pendingUpdate !== null) {
-		const action = pendingUpdate.action;
-		if (action instanceof Function) {
-			// this.setState(({x: 1}) => {x: 2})
-			result.memoizedState = action(baseState);
-		} else {
-			// this.setState({ x: 1})
-			result.memoizedState = action;
-		}
+		const first = pendingUpdate.next;
+		let pending = pendingUpdate.next as Update<any>;
+		do {
+			const updateLane = pending.lane;
+			if (updateLane === renderLane) {
+				const action = pending.action;
+				if (action instanceof Function) {
+					// this.setState(({x: 1}) => {x: 2})
+					baseState = action(baseState);
+				} else {
+					// this.setState({ x: 1})
+					baseState = action;
+				}
+			} else {
+				if (__DEV__) {
+					console.error('不应该进入updateLane !== renderLane逻辑');
+				}
+			}
+			pending = pending.next as Update<any>;
+		} while (pending !== first);
 	}
+	result.memoizedState = baseState;
+
 	return result;
 };

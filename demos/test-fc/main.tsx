@@ -13,21 +13,24 @@ import { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
 function App() {
-	const [num, setNum] = useState(0);
+	const [num, setNum] = useState(100);
 
 	// return <div onClickCapture={() => setNum(num + 1)}>{num}</div>;
-	const arr =
-		num % 2 === 0
-			? [<li key="1">1</li>, <li key="2">2</li>, <li key="3">3</li>]
-			: [<li key="3">3</li>, <li key="2">2</li>, <li key="1">1</li>];
-	const A = [<li>c</li>, <li>d</li>]
-	console.log(A);
-	return <ul>
-		<li>a</li>
-		<li>b</li>
-		{A}
-	</ul>;
-	// return <ul onClickCapture={() => setNum(num + 1)}>{arr}</ul>;
+	// const arr =
+	// 	num % 2 === 0
+	// 		? [<li key="1">1</li>, <li key="2">2</li>, <li key="3">3</li>]
+	// 		: [<li key="3">3</li>, <li key="2">2</li>, <li key="1">1</li>];
+	// const A = [<li>c</li>, <li>d</li>]
+	// return <ul>
+	// 	<li>a</li>
+	// 	<li>b</li>
+	// 	{A}
+	// </ul>;
+	return <ul onClick={() => {
+		setNum(num => num + 1);
+		setNum(num => num + 1);
+		setNum(num => num + 1);
+	}}>{num}</ul>;
 }
 
 // function Child() {
