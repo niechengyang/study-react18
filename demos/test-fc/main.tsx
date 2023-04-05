@@ -9,28 +9,34 @@
  * @date: 2023/2/5 13:01:33
  * @author: 聂成阳(niechengyang@bytedance.com)
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
 function App() {
-	const [num, setNum] = useState(100);
+	const [num, updateNum] = useState(0);
+	useEffect(() => {
+		console.log('App mount');
+	}, []);
 
-	// return <div onClickCapture={() => setNum(num + 1)}>{num}</div>;
-	// const arr =
-	// 	num % 2 === 0
-	// 		? [<li key="1">1</li>, <li key="2">2</li>, <li key="3">3</li>]
-	// 		: [<li key="3">3</li>, <li key="2">2</li>, <li key="1">1</li>];
-	// const A = [<li>c</li>, <li>d</li>]
-	// return <ul>
-	// 	<li>a</li>
-	// 	<li>b</li>
-	// 	{A}
-	// </ul>;
-	return <ul onClick={() => {
-		setNum(num => num + 1);
-		setNum(num => num + 1);
-		setNum(num => num + 1);
-	}}>{num}</ul>;
+	useEffect(() => {
+		console.log('num change create', num);
+		return () => {
+			console.log('num change destroy', num);
+		};
+	}, [num]);
+
+	return (
+		<div onClick={() => updateNum(num + 1)}>
+			{num === 0 ? <Child /> : 'noop'}
+		</div>)
+}
+function Child() {
+	useEffect(() => {
+		console.log('Child mount');
+		return () => console.log('Child unmount');
+	}, []);
+
+	return 'i am child';
 }
 
 // function Child() {
